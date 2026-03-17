@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import membersRoutes from './routes/members';
 import paymentsRoutes from './routes/payments';
 import expensesRoutes from './routes/expenses';
+import pool from './db';
 
 dotenv.config();
 
@@ -23,6 +24,16 @@ app.use('/api/expenses', expensesRoutes);
 // Health check
 app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'Backend is running' });
+});
+
+// Database connection check
+app.get('/api/db-check', async (_req: Request, res: Response) => {
+  try {
+    await pool.query('SELECT 1');
+    res.json({ status: 'Database connection successful' });
+  } catch (error) {
+    res.status(500).json({ status: 'Database connection failed', error: (error as Error).message });
+  }
 });
 
 // Error handling middleware
