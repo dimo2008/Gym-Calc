@@ -1,3 +1,4 @@
+-- Active: 1757956954151@@127.0.0.1@5432@gym_calc
 -- Create members table
 CREATE TABLE IF NOT EXISTS members (
   id SERIAL PRIMARY KEY,

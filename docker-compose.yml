@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile
     container_name: gym_calc_backend
     ports:
-      - "3000:3000"
+      - "4000:4000"
     environment:
       DB_HOST: postgres
       DB_PORT: 5432

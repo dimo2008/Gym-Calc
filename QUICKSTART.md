@@ -7,19 +7,32 @@
 
 ## Setup in 5 Minutes
 
-### Step 1: Create Database
+### Step 1: Install Dependencies
+
+Backend:
+```bash
+cd backend
+npm install
+```
+
+Frontend (new terminal):
+```bash
+cd frontend
+npm install
+```
+
+### Step 2: Create Database
 
 **Windows (PowerShell):**
 ```powershell
 cd backend
-.\setup-db.ps1
-# Follow the prompts to enter your PostgreSQL password
+.\setup-windows.bat
 ```
 
 **Windows (Command Prompt):**
 ```cmd
 cd backend
-setup-db.bat
+setup-windows.bat
 ```
 
 **macOS/Linux:**
@@ -28,16 +41,28 @@ psql -U postgres -c "CREATE DATABASE gym_calc;"
 psql -U postgres -d gym_calc -f backend/sql/init.sql
 ```
 
-### Step 2: Start Backend
+### Step 3: Build and Start Backend
+
 ```bash
 cd backend
-npm install
+npm run build
 npm run dev
 ```
+
 Backend runs on http://localhost:3000
 
-### Step 3: Start Frontend (New Terminal)
+### Step 4: Start Frontend (New Terminal)
+
 ```bash
+cd frontend
+npm start
+```
+
+Frontend runs on http://localhost:4200
+
+### Step 5: Access Application
+
+Open your browser: http://localhost:4200
 cd frontend
 npm install
 npm start
@@ -94,8 +119,8 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=gym_calc
 DB_USER=postgres
-DB_PASSWORD=your_password_here
-PORT=3000
+DB_PASSWORD=postgres123
+PORT=4000
 ```
 
 ## Useful Commands

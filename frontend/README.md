@@ -31,7 +31,7 @@ Angular frontend for the Gym Calc Dashboard application.
 
 ## API Integration
 
-The frontend communicates with the backend API at `http://localhost:3000/api`.
+The frontend communicates with the backend API at `http://localhost:4000/api`.
 
 Make sure the backend server is running before using the application.
 

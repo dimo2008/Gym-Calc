@@ -1,28 +1,39 @@
-const pool = require('../db');
+import { Request, Response } from 'express';
+import pool from '../db';
 
-const getAllPayments = async (req, res) => {
+export interface Payment {
+  id?: number;
+  member_id: number;
+  amount: number;
+  date: string;
+  payment_method?: string;
+  status?: string;
+}
+
+export const getAllPayments = async (_req: Request, res: Response): Promise<void> => {
   try {
     const result = await pool.query('SELECT * FROM payments ORDER BY date DESC');
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-const getPaymentById = async (req, res) => {
+export const getPaymentById = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   try {
     const result = await pool.query('SELECT * FROM payments WHERE id = $1', [id]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Payment not found' });
+      res.status(404).json({ error: 'Payment not found' });
+      return;
     }
     res.json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-const createPayment = async (req, res) => {
+export const createPayment = async (req: Request, res: Response): Promise<void> => {
   const { member_id, amount, date, payment_method, status } = req.body;
   try {
     const result = await pool.query(
@@ -31,11 +42,11 @@ const createPayment = async (req, res) => {
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-const updatePayment = async (req, res) => {
+export const updatePayment = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const { member_id, amount, date, payment_method, status } = req.body;
   try {
@@ -44,31 +55,25 @@ const updatePayment = async (req, res) => {
       [member_id, amount, date, payment_method, status, id]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Payment not found' });
+      res.status(404).json({ error: 'Payment not found' });
+      return;
     }
     res.json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-const deletePayment = async (req, res) => {
+export const deletePayment = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   try {
     const result = await pool.query('DELETE FROM payments WHERE id = $1 RETURNING *', [id]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Payment not found' });
+      res.status(404).json({ error: 'Payment not found' });
+      return;
     }
     res.json({ message: 'Payment deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
-};
-
-module.exports = {
-  getAllPayments,
-  getPaymentById,
-  createPayment,
-  updatePayment,
-  deletePayment,
 };

@@ -1,20 +1,22 @@
 # Gym Calc Dashboard - Full Stack Application
 
-A complete full-stack application built with Node.js, Angular, and PostgreSQL for managing gym members, payments, and expenses.
+A complete full-stack application built with Node.js (TypeScript), Angular, and PostgreSQL for managing gym members, payments, and expenses.
 
 ## Project Structure
 
 ```
 Gym Calc/
 ├── backend/
-│   ├── controllers/
-│   ├── routes/
+│   ├── src/                  # TypeScript source files
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   ├── db.ts
+│   │   └── server.ts
+│   ├── dist/                 # Compiled JavaScript (generated)
 │   ├── sql/
-│   ├── server.js
-│   ├── db.js
+│   ├── tsconfig.json
 │   ├── package.json
-│   ├── .env
-│   └── README.md
+│   └── .env
 ├── frontend/
 │   ├── src/
 │   │   ├── app/
@@ -78,6 +80,9 @@ cd backend
 # Install dependencies
 npm install
 
+# Build TypeScript to JavaScript
+npm run build
+
 # Configure environment variables
 # Edit .env file with your database credentials:
 # DB_HOST=localhost
@@ -87,14 +92,21 @@ npm install
 # DB_PASSWORD=your_password_here
 # PORT=3000
 
-# Start the backend server (development)
+# Start the backend server (development with hot reload)
 npm run dev
 
-# Or start in production
+# Or build and start in production
+npm run build
 npm start
 ```
 
 The backend will run on `http://localhost:3000`
+
+**Note:** 
+- TypeScript source files are in `src/` folder
+- Compiled JavaScript files are generated in `dist/` folder (auto-generated, don't edit)
+- `npm run build` compiles TypeScript to JavaScript
+- `npm run dev` uses ts-node-dev for development and watches for changes
 
 ### 3. Frontend Setup (in a new terminal)
 
@@ -216,7 +228,7 @@ Edit the expense categories in both:
 - Check if the database and tables are created
 
 ### Frontend can't reach backend
-- Ensure backend is running on port 3000
+- Ensure backend is running on port 4000
 - Check browser console for CORS errors
 - Verify API_URL in `frontend/src/app/services/api.service.ts`
 
