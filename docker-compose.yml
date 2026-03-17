@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: gym_calc_postgres
+    environment:
+      POSTGRES_DB: gym_calc
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - gym_calc_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gym_calc_backend
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: gym_calc
+      DB_USER: postgres
+      DB_PASSWORD: postgres123
+      NODE_ENV: production
+    depends_on:
+      - postgres
+    networks:
+      - gym_calc_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gym_calc_frontend
+    ports:
+      - "80:4200"
+    depends_on:
+      - backend
+    networks:
+      - gym_calc_network
+
+volumes:
+  postgres_data:
+
+networks:
+  gym_calc_network:
+    driver: bridge
